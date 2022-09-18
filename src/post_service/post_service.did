@@ -57,10 +57,70 @@ type PostError = variant {
     InviteCodeError;
 };
 
+type UserRegisterCommand = record {
+    name: text;
+};
+
+type RegisterUserResult = variant {
+    Ok: text;
+    Err: UserError;
+};
+
+type UserResult = variant {
+    Ok: UserProfile;
+    Err: UserError;
+};
+
+type UserError = variant {
+    UserNotFound;
+    UserAlreadyExists;
+    UserAlreadyDisable;
+    UserNameTooLong;
+    UserEmailInvalid;
+    UserBiographyTooLong;
+    UserLocationTooLong;
+    AnonymousNotAllowRegistering;
+};
+
+type UserProfile = record {
+    id : nat64;
+    owner : principal;
+    name : text;
+    avatar_id: nat64;
+    avatar_uri: text;
+    status : UserStatus;
+    created_at : nat64;
+};
+
+type UserStatus = variant {
+    Enable;
+    Disable;
+};
+
+type UserEditCommand = record {
+    name: text;
+    avatar_id: nat64;
+    avatar_uri: text;
+    status: UserStatus;
+};
+
+type BoolUserResult = variant {
+    Ok: bool;
+    Err: UserError;
+};
+
 service : {
     "create_post" : (PostCreateCommand) -> (CreatePostResult);
     "query_posts" : (PostPageQuery) -> (PostPageResult);
     "getInvitationCode": (PostCreateCommand) -> (GetInvitationCodeResult);
     "linkByInvitationCode": (invitation_code: text) -> (LinkInvitationResult);
     "greet": (text) -> (text) query;
+
+    "register_user": (UserRegisterCommand) -> (RegisterUserResult);
+    "auto_register_user" : () -> (UserResult);
+    "edit_user" : (UserEditCommand) -> (BoolUserResult);
+    "enable_user" : (principal) -> (BoolUserResult);
+    "disable_user" : (principal) -> (BoolUserResult);
+    "get_user" : (principal) -> (UserResult);
+    "get_self" : () -> (UserResult);
 }
