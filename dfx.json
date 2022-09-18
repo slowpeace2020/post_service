@@ -1,0 +1,34 @@
+{
+  "canisters": {
+    "post_service": {
+      "candid": "src/post_service/post_service.did",
+      "package": "post_service",
+      "type": "rust"
+    },
+    "post_service_assets": {
+      "dependencies": [
+        "post_service"
+      ],
+      "frontend": {
+        "entrypoint": "src/post_service_assets/src/index.html"
+      },
+      "source": [
+        "src/post_service_assets/assets",
+        "dist/post_service_assets/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    }
+  }
+}
