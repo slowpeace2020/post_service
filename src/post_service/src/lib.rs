@@ -8,7 +8,6 @@ use candid::Principal;
 
 pub mod actor;
 pub mod post;
-pub mod user;
 pub mod env;
 pub mod context;
 
